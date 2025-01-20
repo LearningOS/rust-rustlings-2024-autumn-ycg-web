@@ -44,14 +44,42 @@ impl Default for Person {
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        // Step 1: If the length of the string is 0, return the default Person
+        if s.is_empty() {
+            return Person::default();
+        }
+
+        // Step 2: Split the string on the comma
+        let parts: Vec<&str> = s.split(',').collect();
+
+        // Step 3: Extract the name (first part)
+        let name = parts.get(0).unwrap_or(&"").to_string();
+
+        // Step 4: If the name is empty, return the default Person
+        if name.is_empty() {
+            return Person::default();
+        }
+
+        // Step 5: Extract the age (second part), parse it, and handle errors
+        let age = match parts.get(1) {
+            Some(age_str) => age_str.parse::<usize>().unwrap_or_default(),
+            None => 0,
+        };
+
+        // If age is invalid (parsing failed), return the default Person
+        if age == 0 {
+            return Person::default();
+        }
+
+        // Return a new Person with the parsed values
+        Person { name, age }
     }
 }
 
 fn main() {
-    // Use the `from` function
+    // Test the `from` function
     let p1 = Person::from("Mark,20");
-    // Since From is implemented for Person, we should be able to use Into
-    let p2: Person = "Gerald,70".into();
+    let p2: Person = "Gerald,70".into(); // Should also work due to Into implementation
     println!("{:?}", p1);
     println!("{:?}", p2);
 }
@@ -59,31 +87,30 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+
     #[test]
     fn test_default() {
-        // Test that the default person is 30 year old John
         let dp = Person::default();
         assert_eq!(dp.name, "John");
         assert_eq!(dp.age, 30);
     }
+
     #[test]
     fn test_bad_convert() {
-        // Test that John is returned when bad string is provided
         let p = Person::from("");
         assert_eq!(p.name, "John");
         assert_eq!(p.age, 30);
     }
+
     #[test]
     fn test_good_convert() {
-        // Test that "Mark,20" works
         let p = Person::from("Mark,20");
         assert_eq!(p.name, "Mark");
         assert_eq!(p.age, 20);
     }
+
     #[test]
     fn test_bad_age() {
-        // Test that "Mark,twenty" will return the default person due to an
-        // error in parsing age
         let p = Person::from("Mark,twenty");
         assert_eq!(p.name, "John");
         assert_eq!(p.age, 30);

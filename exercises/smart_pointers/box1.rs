@@ -17,12 +17,9 @@
 // Note: the tests should not be changed
 //
 // Execute `rustlings hint box1` or use the `hint` watch subcommand for a hint.
-
-// I AM NOT DONE
-
 #[derive(PartialEq, Debug)]
 pub enum List {
-    Cons(i32, List),
+    Cons(i32, Box<List>),  // 将递归类型通过 Box 包裹
     Nil,
 }
 
@@ -35,11 +32,11 @@ fn main() {
 }
 
 pub fn create_empty_list() -> List {
-    todo!()
+    List::Nil  // 空列表就是 Nil
 }
 
 pub fn create_non_empty_list() -> List {
-    todo!()
+    List::Cons(1, Box::new(List::Nil))  // 非空列表，第一个元素是 1，后续是 Nil
 }
 
 #[cfg(test)]

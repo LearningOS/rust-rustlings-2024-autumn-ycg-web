@@ -5,16 +5,18 @@
 // Execute `rustlings hint macros3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
-mod macros {
+
+
     macro_rules! my_macro {
         () => {
             println!("Check out my macro!");
         };
     }
-}
+  
+
 
 fn main() {
-    my_macro!();
+    // 现在可以正常调用宏了
+    my_macro!();  // 调用宏，应该输出 "Check out my macro!"
 }

@@ -7,25 +7,35 @@
 // Execute `rustlings hint as_ref_mut` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
+// as_ref_mut.rs
 
 // Obtain the number of bytes (not characters) in the given argument.
-// TODO: Add the AsRef trait appropriately as a trait bound.
-fn byte_counter<T>(arg: T) -> usize {
+// Add the AsRef trait appropriately as a trait bound.
+fn byte_counter<T>(arg: T) -> usize
+where
+    T: AsRef<str>, // T must implement AsRef<str> so that we can call as_ref on it
+{
     arg.as_ref().as_bytes().len()
 }
 
 // Obtain the number of characters (not bytes) in the given argument.
-// TODO: Add the AsRef trait appropriately as a trait bound.
-fn char_counter<T>(arg: T) -> usize {
+// Add the AsRef trait appropriately as a trait bound.
+fn char_counter<T>(arg: T) -> usize
+where
+    T: AsRef<str>, // T must implement AsRef<str> so that we can call as_ref on it
+{
     arg.as_ref().chars().count()
 }
 
 // Squares a number using as_mut().
-// TODO: Add the appropriate trait bound.
-fn num_sq<T>(arg: &mut T) {
-    // TODO: Implement the function body.
-    ???
+// Add the appropriate trait bound.
+fn num_sq<T>(arg: &mut T)
+where
+    T: AsMut<u32>, // T must implement AsMut<u32> to allow mutable access to a u32
+{
+    let num = arg.as_mut(); // Get a mutable reference to the inner value
+    *num = *num * *num; // Square the value
 }
 
 #[cfg(test)]
@@ -60,6 +70,6 @@ mod tests {
     fn mult_box() {
         let mut num: Box<u32> = Box::new(3);
         num_sq(&mut num);
-        assert_eq!(*num, 9);
+        assert_eq!(*num, 9); // After squaring, the value should be 9
     }
 }

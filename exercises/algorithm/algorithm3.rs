@@ -7,6 +7,21 @@
 
 fn sort<T>(array: &mut [T]){
 	//TODO
+    let mut x:T;
+    let mut tmp:T;
+    let mut ind=0;
+    for j in array{
+        x=array[ind];
+        for i in array{
+            if x<i {
+                x=*i;
+            }
+        }
+        tmp=array[ind];
+        array[ind]=x;
+        ind=ind+1;
+    }
+
 }
 #[cfg(test)]
 mod tests {
